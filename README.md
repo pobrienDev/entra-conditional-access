@@ -17,8 +17,8 @@ the state storage and the two pipeline identities this repo authenticates as.
 | 1 | Repo, provider, backend, `ca-plan` and `ca-apply` identities | done |
 | 2 | CA003 (block legacy auth) deployed in report-only | done |
 | 3 | Full seven-policy baseline in report-only | done |
-| 4 | Plan guardrails in Python, with tests | next |
-| 5 | PR plan, approval-gated apply | |
+| 4 | Plan guardrails in Python, with tests | done |
+| 5 | PR plan, approval-gated apply | next |
 | 6 | Validate with sign-in logs and What If, enforce one at a time | |
 | 7 | Daily drift detection | |
 
@@ -42,12 +42,48 @@ CA004 overlaps CA001 on purpose: if someone later adds an exclusion to CA001,
 the management plane stays protected. CA003 exists because legacy protocols
 cannot do MFA, so CA001 never applies to them; only a block stops them.
 
+## Guardrails: the safety rules as code
+
+CI converts the plan to JSON and `guardrails/check_plan.py` inspects every
+Conditional Access policy in it. Any broken rule fails the pull request with
+an annotation before it can be merged.
+
+| Rule | What it prevents |
+|---|---|
+| Every policy excludes the break-glass group | A policy that could lock out every admin, including the emergency accounts |
+| New policies start in report-only | Enforcing an untested policy on day one |
+| Names follow `CA###-Who-What-Control`, numbers unique | Unreadable, unsortable, ambiguous policy lists |
+| Deleting, replacing or disabling a policy is blocked unless `ALLOW_CA_DELETE=true` | Silently removing protection; removal should be a deliberate, reviewed decision |
+| No All users + All apps + Block for interactive clients | The classic self-lockout. CA003 passes because it only targets legacy clients |
+| Risk-based policies use sign-in frequency every time | An existing session carrying a risky sign-in through unchallenged |
+
+Two design choices worth knowing. The desired-state rules run against every
+policy in the plan, not just the ones changing, so a policy that drifted in
+the portal and was then adopted into code still fails. And the script fails
+closed: a value Terraform cannot know until apply time counts as wrong.
+
+The break-glass group ID comes from CI configuration, never the repository,
+so a pull request cannot redefine which group must be excluded.
+
+Tests build small plans in the real `terraform show -json` shape, plus one
+redacted plan captured from the tenant so the fixtures cannot drift from
+reality:
+
+```bash
+pip install -r guardrails/requirements-dev.txt
+pytest guardrails
+```
+
+The same checks could be written in Rego for Open Policy Agent and run with
+Conftest, which is the more common tool for this. Python keeps them in the
+stack the rest of my projects use, with no extra binary in CI.
+
 ## Layout
 
 ```
 .
 ├── policies/          Terraform root module: one file per policy
-├── guardrails/        policy-as-code checks on the plan JSON, with tests
+├── guardrails/        check_plan.py and its tests; standard library only
 ├── .github/workflows/ plan on PR, approval-gated apply, daily drift
 └── .githooks/         blocks IDs, secrets and state from being committed
 ```

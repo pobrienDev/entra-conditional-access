@@ -25,8 +25,10 @@ done <<< "$files"
 # Only inspect added lines; the hook itself is exempt from content checks
 added=$(git diff --cached -U0 --diff-filter=ACMR -- . ':!.githooks/pre-commit' | grep '^+' | grep -v '^+++' || true)
 
-# 2. Real GUIDs (tenant, subscription, client, object IDs). All-zero placeholder is allowed.
-guids=$(echo "$added" | grep -oiE '[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}' | grep -v '^00000000-0000-0000-0000-000000000000$' || true)
+# 2. Real GUIDs (tenant, subscription, client, object IDs). Placeholders whose
+#    first four groups are all zero (00000000-0000-0000-0000-xxxxxxxxxxxx) are
+#    allowed, so examples and test fixtures can use obviously fake IDs.
+guids=$(echo "$added" | grep -oiE '[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}' | grep -viE '^00000000-0000-0000-0000-[0-9a-f]{12}$' || true)
 # Well-known public IDs (Microsoft Graph app + its permission IDs) go in .githooks/guid-allowlist
 if [ -n "$guids" ] && [ -f .githooks/guid-allowlist ]; then
   guids=$(echo "$guids" | grep -viFf <(grep -v '^#' .githooks/guid-allowlist | awk '{print $1}' | grep .) || true)
