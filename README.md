@@ -18,8 +18,8 @@ the state storage and the two pipeline identities this repo authenticates as.
 | 2 | CA003 (block legacy auth) deployed in report-only | done |
 | 3 | Full seven-policy baseline in report-only | done |
 | 4 | Plan guardrails in Python, with tests | done |
-| 5 | PR plan, approval-gated apply | in progress |
-| 6 | Validate with sign-in logs and What If, enforce one at a time | |
+| 5 | PR plan, approval-gated apply | done |
+| 6 | Validate with sign-in logs and What If, enforce one at a time | next |
 | 7 | Daily drift detection | |
 
 ## The baseline
@@ -41,6 +41,31 @@ in report-only.
 CA004 overlaps CA001 on purpose: if someone later adds an exclusion to CA001,
 the management plane stays protected. CA003 exists because legacy protocols
 cannot do MFA, so CA001 never applies to them; only a block stops them.
+
+## Pipelines: two identities, one approval
+
+| Workflow | Trigger | Identity | Does |
+|---|---|---|---|
+| `plan.yml` | pull request | `ca-plan` (read) | guardrail tests, fmt, validate, plan, guardrails on the plan JSON, redacted plan and verdict posted to the PR |
+| `apply.yml` | merge touching `policies/`, or manual | `ca-plan`, then `ca-apply` (write) | read-only preview, then the `production` environment waits for a human; the write identity re-plans, re-runs the guardrails and applies only that saved plan |
+| `drift.yml` | daily, or manual | `ca-plan` | `plan -detailed-exitcode`; drift opens or updates one issue with a redacted diff, no drift closes it |
+
+Both identities authenticate with GitHub OIDC federation, so there is no
+client secret anywhere. App-only identities are not subject to Conditional
+Access, which means an identity holding `Policy.ReadWrite.ConditionalAccess`
+could rewrite every policy in the tenant. That is why the write permission
+lives on a separate app whose federated credential trusts only the
+approval-gated `production` environment: a job that skips the environment
+gets a different token subject and cannot obtain a token for it at all.
+
+`main` requires the `plan` and `guardrail tests` checks to pass before a pull
+request can merge. The plan and apply logs are public, so every line of
+Terraform output passes through `.github/scripts/redact.sh` first. The plan
+JSON never leaves the runner.
+
+Both identities are defined as Terraform in
+[entra-terraform](https://github.com/pobrienDev/entra-terraform/blob/main/ca.tf),
+alongside the state storage they read.
 
 ## Guardrails: the safety rules as code
 
