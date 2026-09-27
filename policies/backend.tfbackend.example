@@ -1,0 +1,6 @@
+# Copy to backend.tfbackend (gitignored). Same storage account entra-terraform
+# bootstrapped, different state key. Never commit the real account name.
+storage_account_name = "sttfstatexxxxxxxx"
+container_name       = "tfstate"
+key                  = "conditional-access.tfstate"
+use_azuread_auth     = true

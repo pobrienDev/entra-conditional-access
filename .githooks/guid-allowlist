@@ -1,0 +1,10 @@
+# Public, well-known GUIDs that are safe to commit (identical in every tenant).
+# Format: <guid>  <what it is>
+00000003-0000-0000-c000-000000000000  Microsoft Graph application ID
+797f4846-ba00-4fd7-ba43-dac1f8f63013  Windows Azure Service Management API (Azure management) app ID
+00000000-0000-0000-0000-000000000004  Built-in authentication strength: Phishing-resistant MFA
+62e90394-69f5-4237-9190-012177145e10  Role template: Global Administrator
+e8611ab8-c189-46e8-94e1-60213ab1f814  Role template: Privileged Role Administrator
+194ae4cb-b126-40b2-bd5b-6091b380977d  Role template: Security Administrator
+b1be1c3e-b65d-4f19-8427-f6fa0d97feb9  Role template: Conditional Access Administrator
+fe930be7-5e62-47db-91af-98c3a49a38b1  Role template: User Administrator

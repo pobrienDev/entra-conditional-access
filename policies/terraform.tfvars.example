@@ -1,0 +1,11 @@
+# Copy to terraform.tfvars (gitignored) and fill in. Never commit real IDs.
+#
+#   az account show --query tenantId -o tsv
+#   az ad group show --group CA-Exclude-BreakGlass --query id -o tsv
+
+tenant_id                  = "00000000-0000-0000-0000-000000000000"
+breakglass_group_object_id = "00000000-0000-0000-0000-000000000000"
+
+# Optional. CA007 creates a trusted named location from these. Leave empty to
+# skip it until you know your real egress range.
+trusted_ip_ranges = []
