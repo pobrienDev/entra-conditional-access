@@ -14,8 +14,8 @@ the state storage and the two pipeline identities this repo authenticates as.
 | Phase | Deliverable | State |
 |---|---|---|
 | 0 | Break-glass accounts and group, security defaults off, strong admin methods, test users | done |
-| 1 | Repo, provider, backend, `ca-plan` and `ca-apply` identities | in progress |
-| 2 | CA003 (block legacy auth) deployed in report-only | |
+| 1 | Repo, provider, backend, `ca-plan` and `ca-apply` identities | done |
+| 2 | CA003 (block legacy auth) deployed in report-only | in progress |
 | 3 | Full seven-policy baseline in report-only | |
 | 4 | Plan guardrails in Python, with tests | |
 | 5 | PR plan, approval-gated apply | |
