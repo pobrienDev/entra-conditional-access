@@ -1,0 +1,127 @@
+name: plan
+
+# Every pull request: format, validate, plan with the read-only identity, run
+# the guardrails on the plan JSON, and post a redacted plan to the PR.
+# Nothing here can change the tenant: ca-plan holds no write permission and
+# no lease on the state blob.
+
+on:
+  pull_request:
+
+# id-token lets the job request a GitHub OIDC token, which Entra ID exchanges
+# for a Graph token via ca-plan's federated credential. No secret is stored.
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: plan-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  guardrail-tests:
+    name: guardrail tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install -r guardrails/requirements-dev.txt
+      - run: python -m pytest guardrails -q
+
+  plan:
+    runs-on: ubuntu-latest
+    # Fork PRs get no OIDC token and no secrets, so the job could only fail.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    defaults:
+      run:
+        working-directory: policies
+    env:
+      ARM_USE_OIDC: "true"
+      ARM_USE_AZUREAD: "true"
+      ARM_CLIENT_ID: ${{ secrets.CA_PLAN_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      TF_VAR_breakglass_group_object_id: ${{ secrets.BREAKGLASS_GROUP_ID }}
+      TF_VAR_trusted_ip_ranges: ${{ secrets.TRUSTED_IP_RANGES }}
+      # The guardrail reads this from the environment, never from the repo,
+      # so a pull request cannot change which group must be excluded.
+      BREAKGLASS_GROUP_ID: ${{ secrets.BREAKGLASS_GROUP_ID }}
+      TENANT_NAME: ${{ secrets.TENANT_NAME }} # present only so GitHub masks it
+      TF_IN_AUTOMATION: "true"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.3"
+          terraform_wrapper: false
+
+      - name: Format
+        run: terraform fmt -check -recursive
+
+      - name: Init
+        run: |
+          terraform init -input=false \
+            -backend-config="storage_account_name=${{ secrets.TFSTATE_STORAGE_ACCOUNT }}" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=conditional-access.tfstate" \
+            -backend-config="use_azuread_auth=true" \
+            -backend-config="use_oidc=true"
+
+      - name: Validate
+        run: terraform validate
+
+      # Raw output goes to a file, never stdout. Only the redacted copy is
+      # printed. plan.json is for the guardrails and is never uploaded.
+      - name: Plan
+        id: plan
+        run: |
+          code=0
+          # -lock=false: ca-plan can read state but not write a lease.
+          terraform plan -input=false -no-color -lock=false -detailed-exitcode -out=tfplan > plan.raw 2>&1 || code=$?
+          ../.github/scripts/redact.sh < plan.raw > plan.txt
+          rm -f plan.raw
+          cat plan.txt
+          echo "exitcode=$code" >> "$GITHUB_OUTPUT"
+          # 0 = no changes, 2 = changes pending. Only 1 is a real failure.
+          if [ "$code" -eq 1 ]; then exit 1; fi
+          terraform show -json tfplan > plan.json
+
+      - name: Guardrails
+        id: guardrails
+        continue-on-error: true # so the PR comment below still gets posted
+        run: python3 ../guardrails/check_plan.py plan.json | tee guardrails.txt
+
+      - name: Comment on PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ steps.guardrails.outcome }}" = "success" ]; then
+            verdict="**Guardrails:** passed"
+          else
+            verdict="**Guardrails:** FAILED"
+          fi
+          {
+            echo "#### \`terraform plan\` (IDs redacted)"
+            echo
+            echo "$verdict"
+            echo '```'
+            cat guardrails.txt
+            echo '```'
+            echo '```'
+            tail -c 60000 plan.txt
+            echo '```'
+          } > comment.md
+          cat comment.md >> "$GITHUB_STEP_SUMMARY"
+          gh pr comment "${{ github.event.pull_request.number }}" --body-file comment.md --edit-last \
+            || gh pr comment "${{ github.event.pull_request.number }}" --body-file comment.md
+
+      - name: Fail if guardrails failed
+        if: steps.guardrails.outcome != 'success'
+        run: |
+          echo "::error::guardrails rejected this plan; see the annotations above"
+          exit 1
