@@ -1,0 +1,118 @@
+name: apply
+
+# Merges to main that touch the policies: preview the plan with the read-only
+# identity, then wait for a human to approve the `production` environment
+# before the write identity re-plans, re-runs the guardrails and applies.
+#
+# ca-apply's federated credential trusts only this environment, so its write
+# permission is unreachable from any job that skips the approval.
+
+on:
+  push:
+    branches: [main]
+    paths: ["policies/**"]
+  workflow_dispatch: # manual run: always goes through approval, even with no changes
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: apply
+  cancel-in-progress: false
+
+env:
+  ARM_USE_OIDC: "true"
+  ARM_USE_AZUREAD: "true"
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+  TF_VAR_breakglass_group_object_id: ${{ secrets.BREAKGLASS_GROUP_ID }}
+  TF_VAR_trusted_ip_ranges: ${{ secrets.TRUSTED_IP_RANGES }}
+  BREAKGLASS_GROUP_ID: ${{ secrets.BREAKGLASS_GROUP_ID }}
+  TENANT_NAME: ${{ secrets.TENANT_NAME }}
+  TF_IN_AUTOMATION: "true"
+
+jobs:
+  preview:
+    name: preview (read-only)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: policies
+    env:
+      ARM_CLIENT_ID: ${{ secrets.CA_PLAN_CLIENT_ID }}
+    outputs:
+      exitcode: ${{ steps.plan.outputs.exitcode }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.3"
+          terraform_wrapper: false
+      - name: Init
+        run: |
+          terraform init -input=false \
+            -backend-config="storage_account_name=${{ secrets.TFSTATE_STORAGE_ACCOUNT }}" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=conditional-access.tfstate" \
+            -backend-config="use_azuread_auth=true" \
+            -backend-config="use_oidc=true"
+      - name: Plan
+        id: plan
+        run: |
+          code=0
+          terraform plan -input=false -no-color -lock=false -detailed-exitcode > plan.raw 2>&1 || code=$?
+          ../.github/scripts/redact.sh < plan.raw > plan.txt
+          rm -f plan.raw
+          cat plan.txt
+          { echo '### What approving will apply (IDs redacted)'; echo '```'; cat plan.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          echo "exitcode=$code" >> "$GITHUB_OUTPUT"
+          if [ "$code" -eq 1 ]; then exit 1; fi
+
+  apply:
+    needs: preview
+    # Skip the approval request when there is nothing to apply, unless run by hand.
+    if: needs.preview.outputs.exitcode == '2' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: production # required reviewer gates everything below
+    defaults:
+      run:
+        working-directory: policies
+    env:
+      ARM_CLIENT_ID: ${{ secrets.CA_APPLY_CLIENT_ID }} # environment secret: only visible here
+    steps:
+      - uses: actions/checkout@v7
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.3"
+          terraform_wrapper: false
+      - name: Init
+        run: |
+          terraform init -input=false \
+            -backend-config="storage_account_name=${{ secrets.TFSTATE_STORAGE_ACCOUNT }}" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=conditional-access.tfstate" \
+            -backend-config="use_azuread_auth=true" \
+            -backend-config="use_oidc=true"
+
+      # Re-plan under the write identity and take a lock: the tenant may have
+      # changed since the preview, and only this saved plan is ever applied.
+      - name: Plan
+        run: |
+          terraform plan -input=false -no-color -out=tfplan > plan.raw 2>&1 || { ../.github/scripts/redact.sh < plan.raw; exit 1; }
+          ../.github/scripts/redact.sh < plan.raw > plan.txt
+          rm -f plan.raw
+          cat plan.txt
+          terraform show -json tfplan > plan.json
+
+      - name: Guardrails
+        run: python3 ../guardrails/check_plan.py plan.json
+
+      - name: Apply
+        run: |
+          terraform apply -input=false -no-color tfplan > apply.raw 2>&1 || { ../.github/scripts/redact.sh < apply.raw; exit 1; }
+          ../.github/scripts/redact.sh < apply.raw > apply.txt
+          rm -f apply.raw tfplan plan.json
+          cat apply.txt
+          { echo '### terraform apply (IDs redacted)'; echo '```'; cat apply.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"

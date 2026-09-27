@@ -18,7 +18,7 @@ the state storage and the two pipeline identities this repo authenticates as.
 | 2 | CA003 (block legacy auth) deployed in report-only | done |
 | 3 | Full seven-policy baseline in report-only | done |
 | 4 | Plan guardrails in Python, with tests | done |
-| 5 | PR plan, approval-gated apply | next |
+| 5 | PR plan, approval-gated apply | in progress |
 | 6 | Validate with sign-in logs and What If, enforce one at a time | |
 | 7 | Daily drift detection | |
 
