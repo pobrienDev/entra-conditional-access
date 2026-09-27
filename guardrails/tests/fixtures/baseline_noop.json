@@ -1,0 +1,1881 @@
+{
+ "format_version": "1.2",
+ "terraform_version": "1.16.3",
+ "resource_changes": [
+  {
+   "address": "azuread_conditional_access_policy.ca001",
+   "mode": "managed",
+   "type": "azuread_conditional_access_policy",
+   "name": "ca001",
+   "provider_name": "registry.terraform.io/hashicorp/azuread",
+   "change": {
+    "actions": [
+     "no-op"
+    ],
+    "before": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          "All"
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "all"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          "All"
+         ]
+        }
+       ]
+      }
+     ],
+     "display_name": "CA001-AllUsers-AllApps-RequireMFA",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "",
+       "built_in_controls": [
+        "mfa"
+       ],
+       "custom_authentication_factors": [],
+       "operator": "OR",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000001",
+     "object_id": "00000000-0000-0000-0000-000000000001",
+     "session_controls": [],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          "All"
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "all"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          "All"
+         ]
+        }
+       ]
+      }
+     ],
+     "display_name": "CA001-AllUsers-AllApps-RequireMFA",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "",
+       "built_in_controls": [
+        "mfa"
+       ],
+       "custom_authentication_factors": [],
+       "operator": "OR",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000001",
+     "object_id": "00000000-0000-0000-0000-000000000001",
+     "session_controls": [],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after_unknown": {},
+    "before_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          false
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          false
+         ]
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [
+        false
+       ],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": []
+    },
+    "after_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          false
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          false
+         ]
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [
+        false
+       ],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": []
+    }
+   }
+  },
+  {
+   "address": "azuread_conditional_access_policy.ca002",
+   "mode": "managed",
+   "type": "azuread_conditional_access_policy",
+   "name": "ca002",
+   "provider_name": "registry.terraform.io/hashicorp/azuread",
+   "change": {
+    "actions": [
+     "no-op"
+    ],
+    "before": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          "All"
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "all"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [
+          "62e90394-69f5-4237-9190-012177145e10",
+          "e8611ab8-c189-46e8-94e1-60213ab1f814",
+          "194ae4cb-b126-40b2-bd5b-6091b380977d",
+          "b1be1c3e-b65d-4f19-8427-f6fa0d97feb9",
+          "fe930be7-5e62-47db-91af-98c3a49a38b1"
+         ],
+         "included_users": []
+        }
+       ]
+      }
+     ],
+     "display_name": "CA002-Admins-AllApps-PhishingResistant",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "/policies/authenticationStrengthPolicies/00000000-0000-0000-0000-000000000004",
+       "built_in_controls": [],
+       "custom_authentication_factors": [],
+       "operator": "OR",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000002",
+     "object_id": "00000000-0000-0000-0000-000000000002",
+     "session_controls": [],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          "All"
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "all"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [
+          "62e90394-69f5-4237-9190-012177145e10",
+          "e8611ab8-c189-46e8-94e1-60213ab1f814",
+          "194ae4cb-b126-40b2-bd5b-6091b380977d",
+          "b1be1c3e-b65d-4f19-8427-f6fa0d97feb9",
+          "fe930be7-5e62-47db-91af-98c3a49a38b1"
+         ],
+         "included_users": []
+        }
+       ]
+      }
+     ],
+     "display_name": "CA002-Admins-AllApps-PhishingResistant",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "/policies/authenticationStrengthPolicies/00000000-0000-0000-0000-000000000004",
+       "built_in_controls": [],
+       "custom_authentication_factors": [],
+       "operator": "OR",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000002",
+     "object_id": "00000000-0000-0000-0000-000000000002",
+     "session_controls": [],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after_unknown": {},
+    "before_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          false
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [
+          false,
+          false,
+          false,
+          false,
+          false
+         ],
+         "included_users": []
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": []
+    },
+    "after_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          false
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [
+          false,
+          false,
+          false,
+          false,
+          false
+         ],
+         "included_users": []
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": []
+    }
+   }
+  },
+  {
+   "address": "azuread_conditional_access_policy.ca003",
+   "mode": "managed",
+   "type": "azuread_conditional_access_policy",
+   "name": "ca003",
+   "provider_name": "registry.terraform.io/hashicorp/azuread",
+   "change": {
+    "actions": [
+     "no-op"
+    ],
+    "before": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          "All"
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "exchangeActiveSync",
+        "other"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          "All"
+         ]
+        }
+       ]
+      }
+     ],
+     "display_name": "CA003-AllUsers-LegacyAuth-Block",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "",
+       "built_in_controls": [
+        "block"
+       ],
+       "custom_authentication_factors": [],
+       "operator": "OR",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000003",
+     "object_id": "00000000-0000-0000-0000-000000000003",
+     "session_controls": [],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          "All"
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "exchangeActiveSync",
+        "other"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          "All"
+         ]
+        }
+       ]
+      }
+     ],
+     "display_name": "CA003-AllUsers-LegacyAuth-Block",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "",
+       "built_in_controls": [
+        "block"
+       ],
+       "custom_authentication_factors": [],
+       "operator": "OR",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000003",
+     "object_id": "00000000-0000-0000-0000-000000000003",
+     "session_controls": [],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after_unknown": {},
+    "before_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          false
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false,
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          false
+         ]
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [
+        false
+       ],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": []
+    },
+    "after_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          false
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false,
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          false
+         ]
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [
+        false
+       ],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": []
+    }
+   }
+  },
+  {
+   "address": "azuread_conditional_access_policy.ca004",
+   "mode": "managed",
+   "type": "azuread_conditional_access_policy",
+   "name": "ca004",
+   "provider_name": "registry.terraform.io/hashicorp/azuread",
+   "change": {
+    "actions": [
+     "no-op"
+    ],
+    "before": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          "797f4846-ba00-4fd7-ba43-dac1f8f63013"
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "all"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          "All"
+         ]
+        }
+       ]
+      }
+     ],
+     "display_name": "CA004-AllUsers-AzureMgmt-RequireMFA",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "",
+       "built_in_controls": [
+        "mfa"
+       ],
+       "custom_authentication_factors": [],
+       "operator": "OR",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000004",
+     "object_id": "00000000-0000-0000-0000-000000000004",
+     "session_controls": [],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          "797f4846-ba00-4fd7-ba43-dac1f8f63013"
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "all"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          "All"
+         ]
+        }
+       ]
+      }
+     ],
+     "display_name": "CA004-AllUsers-AzureMgmt-RequireMFA",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "",
+       "built_in_controls": [
+        "mfa"
+       ],
+       "custom_authentication_factors": [],
+       "operator": "OR",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000004",
+     "object_id": "00000000-0000-0000-0000-000000000004",
+     "session_controls": [],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after_unknown": {},
+    "before_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          false
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          false
+         ]
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [
+        false
+       ],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": []
+    },
+    "after_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          false
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          false
+         ]
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [
+        false
+       ],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": []
+    }
+   }
+  },
+  {
+   "address": "azuread_conditional_access_policy.ca005",
+   "mode": "managed",
+   "type": "azuread_conditional_access_policy",
+   "name": "ca005",
+   "provider_name": "registry.terraform.io/hashicorp/azuread",
+   "change": {
+    "actions": [
+     "no-op"
+    ],
+    "before": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          "All"
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "all"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [
+        "medium",
+        "high"
+       ],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          "All"
+         ]
+        }
+       ]
+      }
+     ],
+     "display_name": "CA005-AllUsers-SignInRiskMedHigh-MFA",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "",
+       "built_in_controls": [
+        "mfa"
+       ],
+       "custom_authentication_factors": [],
+       "operator": "OR",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000005",
+     "object_id": "00000000-0000-0000-0000-000000000005",
+     "session_controls": [
+      {
+       "application_enforced_restrictions_enabled": false,
+       "cloud_app_security_policy": "",
+       "disable_resilience_defaults": false,
+       "persistent_browser_mode": "",
+       "sign_in_frequency": 0,
+       "sign_in_frequency_authentication_type": "primaryAndSecondaryAuthentication",
+       "sign_in_frequency_interval": "everyTime",
+       "sign_in_frequency_period": ""
+      }
+     ],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          "All"
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "all"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [
+        "medium",
+        "high"
+       ],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          "All"
+         ]
+        }
+       ]
+      }
+     ],
+     "display_name": "CA005-AllUsers-SignInRiskMedHigh-MFA",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "",
+       "built_in_controls": [
+        "mfa"
+       ],
+       "custom_authentication_factors": [],
+       "operator": "OR",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000005",
+     "object_id": "00000000-0000-0000-0000-000000000005",
+     "session_controls": [
+      {
+       "application_enforced_restrictions_enabled": false,
+       "cloud_app_security_policy": "",
+       "disable_resilience_defaults": false,
+       "persistent_browser_mode": "",
+       "sign_in_frequency": 0,
+       "sign_in_frequency_authentication_type": "primaryAndSecondaryAuthentication",
+       "sign_in_frequency_interval": "everyTime",
+       "sign_in_frequency_period": ""
+      }
+     ],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after_unknown": {},
+    "before_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          false
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [
+        false,
+        false
+       ],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          false
+         ]
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [
+        false
+       ],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": [
+      {}
+     ]
+    },
+    "after_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          false
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [
+        false,
+        false
+       ],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          false
+         ]
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [
+        false
+       ],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": [
+      {}
+     ]
+    }
+   }
+  },
+  {
+   "address": "azuread_conditional_access_policy.ca006",
+   "mode": "managed",
+   "type": "azuread_conditional_access_policy",
+   "name": "ca006",
+   "provider_name": "registry.terraform.io/hashicorp/azuread",
+   "change": {
+    "actions": [
+     "no-op"
+    ],
+    "before": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          "All"
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "all"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [
+        "high"
+       ],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          "All"
+         ]
+        }
+       ]
+      }
+     ],
+     "display_name": "CA006-AllUsers-UserRiskHigh-PasswordChange",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "",
+       "built_in_controls": [
+        "mfa",
+        "passwordChange"
+       ],
+       "custom_authentication_factors": [],
+       "operator": "AND",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000006",
+     "object_id": "00000000-0000-0000-0000-000000000006",
+     "session_controls": [
+      {
+       "application_enforced_restrictions_enabled": false,
+       "cloud_app_security_policy": "",
+       "disable_resilience_defaults": false,
+       "persistent_browser_mode": "",
+       "sign_in_frequency": 0,
+       "sign_in_frequency_authentication_type": "primaryAndSecondaryAuthentication",
+       "sign_in_frequency_interval": "everyTime",
+       "sign_in_frequency_period": ""
+      }
+     ],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          "All"
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "all"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [
+        "high"
+       ],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          "All"
+         ]
+        }
+       ]
+      }
+     ],
+     "display_name": "CA006-AllUsers-UserRiskHigh-PasswordChange",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "",
+       "built_in_controls": [
+        "mfa",
+        "passwordChange"
+       ],
+       "custom_authentication_factors": [],
+       "operator": "AND",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000006",
+     "object_id": "00000000-0000-0000-0000-000000000006",
+     "session_controls": [
+      {
+       "application_enforced_restrictions_enabled": false,
+       "cloud_app_security_policy": "",
+       "disable_resilience_defaults": false,
+       "persistent_browser_mode": "",
+       "sign_in_frequency": 0,
+       "sign_in_frequency_authentication_type": "primaryAndSecondaryAuthentication",
+       "sign_in_frequency_interval": "everyTime",
+       "sign_in_frequency_period": ""
+      }
+     ],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after_unknown": {},
+    "before_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          false
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [
+        false
+       ],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          false
+         ]
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [
+        false,
+        false
+       ],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": [
+      {}
+     ]
+    },
+    "after_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [
+          false
+         ],
+         "included_user_actions": []
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [
+        false
+       ],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          false
+         ]
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [
+        false,
+        false
+       ],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": [
+      {}
+     ]
+    }
+   }
+  },
+  {
+   "address": "azuread_conditional_access_policy.ca007",
+   "mode": "managed",
+   "type": "azuread_conditional_access_policy",
+   "name": "ca007",
+   "provider_name": "registry.terraform.io/hashicorp/azuread",
+   "change": {
+    "actions": [
+     "no-op"
+    ],
+    "before": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [],
+         "included_user_actions": [
+          "urn:user:registersecurityinfo"
+         ]
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "all"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [
+        {
+         "excluded_locations": [
+          "AllTrusted"
+         ],
+         "included_locations": [
+          "All"
+         ]
+        }
+       ],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          "All"
+         ]
+        }
+       ]
+      }
+     ],
+     "display_name": "CA007-AllUsers-RegisterSecInfo-TrustedOnly",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "",
+       "built_in_controls": [
+        "mfa"
+       ],
+       "custom_authentication_factors": [],
+       "operator": "OR",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000007",
+     "object_id": "00000000-0000-0000-0000-000000000007",
+     "session_controls": [],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [],
+         "included_user_actions": [
+          "urn:user:registersecurityinfo"
+         ]
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        "all"
+       ],
+       "client_applications": [],
+       "devices": [],
+       "insider_risk_levels": "",
+       "locations": [
+        {
+         "excluded_locations": [
+          "AllTrusted"
+         ],
+         "included_locations": [
+          "All"
+         ]
+        }
+       ],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          "00000000-0000-0000-0000-00000000000b"
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          "All"
+         ]
+        }
+       ]
+      }
+     ],
+     "display_name": "CA007-AllUsers-RegisterSecInfo-TrustedOnly",
+     "grant_controls": [
+      {
+       "authentication_strength_policy_id": "",
+       "built_in_controls": [
+        "mfa"
+       ],
+       "custom_authentication_factors": [],
+       "operator": "OR",
+       "terms_of_use": []
+      }
+     ],
+     "id": "/identity/conditionalAccess/policies/00000000-0000-0000-0000-000000000007",
+     "object_id": "00000000-0000-0000-0000-000000000007",
+     "session_controls": [],
+     "state": "enabledForReportingButNotEnforced",
+     "timeouts": null
+    },
+    "after_unknown": {},
+    "before_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [],
+         "included_user_actions": [
+          false
+         ]
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [
+        {
+         "excluded_locations": [
+          false
+         ],
+         "included_locations": [
+          false
+         ]
+        }
+       ],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          false
+         ]
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [
+        false
+       ],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": []
+    },
+    "after_sensitive": {
+     "conditions": [
+      {
+       "applications": [
+        {
+         "excluded_applications": [],
+         "filter": [],
+         "included_applications": [],
+         "included_user_actions": [
+          false
+         ]
+        }
+       ],
+       "authentication_flow_transfer_methods": [],
+       "client_app_types": [
+        false
+       ],
+       "client_applications": [],
+       "devices": [],
+       "locations": [
+        {
+         "excluded_locations": [
+          false
+         ],
+         "included_locations": [
+          false
+         ]
+        }
+       ],
+       "platforms": [],
+       "service_principal_risk_levels": [],
+       "sign_in_risk_levels": [],
+       "user_risk_levels": [],
+       "users": [
+        {
+         "excluded_groups": [
+          false
+         ],
+         "excluded_guests_or_external_users": [],
+         "excluded_roles": [],
+         "excluded_users": [],
+         "included_groups": [],
+         "included_guests_or_external_users": [],
+         "included_roles": [],
+         "included_users": [
+          false
+         ]
+        }
+       ]
+      }
+     ],
+     "grant_controls": [
+      {
+       "built_in_controls": [
+        false
+       ],
+       "custom_authentication_factors": [],
+       "terms_of_use": []
+      }
+     ],
+     "session_controls": []
+    }
+   }
+  },
+  {
+   "address": "azuread_named_location.office[0]",
+   "mode": "managed",
+   "type": "azuread_named_location",
+   "name": "office",
+   "index": 0,
+   "provider_name": "registry.terraform.io/hashicorp/azuread",
+   "change": {
+    "actions": [
+     "no-op"
+    ],
+    "before": {
+     "country": [],
+     "display_name": "Trusted-Office",
+     "id": "/identity/conditionalAccess/namedLocations/00000000-0000-0000-0000-000000000008",
+     "ip": [
+      {
+       "ip_ranges": [
+        "203.0.113.0/24"
+       ],
+       "trusted": true
+      }
+     ],
+     "object_id": "00000000-0000-0000-0000-000000000008",
+     "timeouts": null
+    },
+    "after": {
+     "country": [],
+     "display_name": "Trusted-Office",
+     "id": "/identity/conditionalAccess/namedLocations/00000000-0000-0000-0000-000000000008",
+     "ip": [
+      {
+       "ip_ranges": [
+        "203.0.113.0/24"
+       ],
+       "trusted": true
+      }
+     ],
+     "object_id": "00000000-0000-0000-0000-000000000008",
+     "timeouts": null
+    },
+    "after_unknown": {},
+    "before_sensitive": {
+     "country": [],
+     "ip": [
+      {
+       "ip_ranges": [
+        false
+       ]
+      }
+     ]
+    },
+    "after_sensitive": {
+     "country": [],
+     "ip": [
+      {
+       "ip_ranges": [
+        false
+       ]
+      }
+     ]
+    }
+   }
+  }
+ ]
+}
