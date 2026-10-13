@@ -17,8 +17,7 @@ resource "azuread_conditional_access_policy" "ca004" {
     }
 
     users {
-      included_users  = ["All"]
-      excluded_groups = local.breakglass_exclusions
+      included_users = ["All"]
     }
   }
 
