@@ -37,38 +37,20 @@ jobs:
   preview:
     name: preview (read-only)
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: policies
     env:
       ARM_CLIENT_ID: ${{ secrets.CA_PLAN_CLIENT_ID }}
     outputs:
       exitcode: ${{ steps.plan.outputs.exitcode }}
     steps:
       - uses: actions/checkout@v7
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.16.3"
-          terraform_wrapper: false
-      - name: Init
-        run: |
-          terraform init -input=false \
-            -backend-config="storage_account_name=${{ secrets.TFSTATE_STORAGE_ACCOUNT }}" \
-            -backend-config="container_name=tfstate" \
-            -backend-config="key=conditional-access.tfstate" \
-            -backend-config="use_azuread_auth=true" \
-            -backend-config="use_oidc=true"
-      - name: Plan
+      - uses: ./.github/actions/plan
         id: plan
+        with:
+          storage-account: ${{ secrets.TFSTATE_STORAGE_ACCOUNT }}
+          args: -lock=false
+      - name: Summarise for the approver
         run: |
-          code=0
-          terraform plan -input=false -no-color -lock=false -detailed-exitcode > plan.raw 2>&1 || code=$?
-          ../.github/scripts/redact.sh < plan.raw > plan.txt
-          rm -f plan.raw
-          cat plan.txt
-          { echo '### What approving will apply (IDs redacted)'; echo '```'; cat plan.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
-          echo "exitcode=$code" >> "$GITHUB_OUTPUT"
-          if [ "$code" -eq 1 ]; then exit 1; fi
+          { echo '### What approving will apply (IDs redacted)'; echo '```'; cat policies/plan.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
 
   apply:
     needs: preview
@@ -83,36 +65,24 @@ jobs:
       ARM_CLIENT_ID: ${{ secrets.CA_APPLY_CLIENT_ID }} # environment secret: only visible here
     steps:
       - uses: actions/checkout@v7
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.16.3"
-          terraform_wrapper: false
-      - name: Init
-        run: |
-          terraform init -input=false \
-            -backend-config="storage_account_name=${{ secrets.TFSTATE_STORAGE_ACCOUNT }}" \
-            -backend-config="container_name=tfstate" \
-            -backend-config="key=conditional-access.tfstate" \
-            -backend-config="use_azuread_auth=true" \
-            -backend-config="use_oidc=true"
 
       # Re-plan under the write identity and take a lock: the tenant may have
       # changed since the preview, and only this saved plan is ever applied.
-      - name: Plan
-        run: |
-          terraform plan -input=false -no-color -out=tfplan > plan.raw 2>&1 || { ../.github/scripts/redact.sh < plan.raw; exit 1; }
-          ../.github/scripts/redact.sh < plan.raw > plan.txt
-          rm -f plan.raw
-          cat plan.txt
-          terraform show -json tfplan > plan.json
+      - uses: ./.github/actions/plan
+        with:
+          storage-account: ${{ secrets.TFSTATE_STORAGE_ACCOUNT }}
+          args: -out=tfplan
 
       - name: Guardrails
-        run: python3 ../guardrails/check_plan.py plan.json
+        run: |
+          terraform show -json tfplan > plan.json
+          python3 ../guardrails/check_plan.py plan.json
 
       - name: Apply
         run: |
-          terraform apply -input=false -no-color tfplan > apply.raw 2>&1 || { ../.github/scripts/redact.sh < apply.raw; exit 1; }
+          terraform apply -input=false -no-color tfplan > apply.raw 2>&1 || code=$?
           ../.github/scripts/redact.sh < apply.raw > apply.txt
           rm -f apply.raw tfplan plan.json
           cat apply.txt
           { echo '### terraform apply (IDs redacted)'; echo '```'; cat apply.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          exit "${code:-0}"

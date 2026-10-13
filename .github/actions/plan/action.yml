@@ -1,0 +1,54 @@
+name: terraform plan (redacted)
+description: >-
+  Install Terraform, initialise the remote backend and run a plan whose output
+  is redacted before it is printed. Every workflow in this repository plans the
+  same way; this is the one place that defines how.
+
+inputs:
+  storage-account:
+    description: Name of the state storage account (a secret).
+    required: true
+  args:
+    description: Extra arguments for `terraform plan`, e.g. `-lock=false` or `-out=tfplan`.
+    default: ""
+
+outputs:
+  exitcode:
+    description: 0 = no changes, 2 = changes pending. 1 fails the step.
+    value: ${{ steps.plan.outputs.exitcode }}
+
+runs:
+  using: composite
+  steps:
+    - uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: "1.16.3"
+        terraform_wrapper: false
+
+    - name: Init
+      shell: bash
+      working-directory: policies
+      run: |
+        terraform init -input=false \
+          -backend-config="storage_account_name=${{ inputs.storage-account }}" \
+          -backend-config="container_name=tfstate" \
+          -backend-config="key=conditional-access.tfstate" \
+          -backend-config="use_azuread_auth=true" \
+          -backend-config="use_oidc=true"
+
+    # Raw output goes to a file, never stdout: it holds tenant and object IDs
+    # and this repository's logs are public. Only the redacted copy is printed,
+    # and it is left in policies/plan.txt for the caller to post or summarise.
+    - name: Plan
+      id: plan
+      shell: bash
+      working-directory: policies
+      run: |
+        code=0
+        terraform plan -input=false -no-color -detailed-exitcode ${{ inputs.args }} > plan.raw 2>&1 || code=$?
+        "$GITHUB_ACTION_PATH/../../scripts/redact.sh" < plan.raw > plan.txt
+        rm -f plan.raw
+        cat plan.txt
+        echo "exitcode=$code" >> "$GITHUB_OUTPUT"
+        # 0 = no changes, 2 = changes pending. Only 1 is a real failure.
+        [ "$code" -ne 1 ]

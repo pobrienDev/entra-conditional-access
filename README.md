@@ -59,9 +59,11 @@ approval-gated `production` environment: a job that skips the environment
 gets a different token subject and cannot obtain a token for it at all.
 
 `main` requires the `plan` and `guardrail tests` checks to pass before a pull
-request can merge. The plan and apply logs are public, so every line of
-Terraform output passes through `.github/scripts/redact.sh` first. The plan
-JSON never leaves the runner.
+request can merge. All four plans (pull request, preview, apply, drift) run
+through one composite action, `.github/actions/plan`, so there is a single
+definition of how this repository initialises and plans. The logs are public,
+so every line of Terraform output passes through `.github/scripts/redact.sh`
+first, which has its own tests. The plan JSON never leaves the runner.
 
 Both identities are defined as Terraform in
 [entra-terraform](https://github.com/pobrienDev/entra-terraform/blob/main/ca.tf),
@@ -96,7 +98,7 @@ reality:
 
 ```bash
 pip install -r guardrails/requirements-dev.txt
-pytest guardrails
+pytest
 ```
 
 The same checks could be written in Rego for Open Policy Agent and run with
@@ -107,11 +109,49 @@ stack the rest of my projects use, with no extra binary in CI.
 
 ```
 .
-├── policies/          Terraform root module: one file per policy
-├── guardrails/        check_plan.py and its tests; standard library only
-├── .github/workflows/ plan on PR, approval-gated apply, daily drift
-└── .githooks/         blocks IDs, secrets and state from being committed
+├── policies/            Terraform root module: one file per policy
+├── guardrails/          check_plan.py and its tests; standard library only
+├── .github/workflows/   plan on PR, approval-gated apply, daily drift
+├── .github/actions/plan the one definition of init + redacted plan
+├── .github/scripts/     redact.sh
+└── .githooks/           blocks IDs, secrets and state from being committed
 ```
+
+## Running it yourself
+
+Prerequisites: Terraform 1.9 or later, the Azure CLI, Python 3.12 or later,
+and a tenant where you can create Conditional Access policies. Do the
+prerequisites in the plan first: two break-glass accounts in a group named
+`CA-Exclude-BreakGlass`, security defaults off, a strong method on your own
+admin account.
+
+1. Sign in, enable the leak guard, and create the local config files:
+
+   ```bash
+   az login --tenant <your-tenant-id>
+   git config core.hooksPath .githooks
+   cp policies/terraform.tfvars.example policies/terraform.tfvars      # tenant + break-glass group IDs
+   cp policies/backend.tfbackend.example policies/backend.tfbackend    # your state storage account
+   ```
+
+2. Plan and apply from `policies/`:
+
+   ```bash
+   cd policies
+   terraform init -backend-config=backend.tfbackend
+   terraform plan -out=tfplan
+   terraform show -json tfplan > plan.json && BREAKGLASS_GROUP_ID=<group-id> python3 ../guardrails/check_plan.py plan.json
+   terraform apply tfplan
+   ```
+
+For CI, create two app registrations with GitHub OIDC federated credentials
+(this repo's are defined in
+[entra-terraform/ca.tf](https://github.com/pobrienDev/entra-terraform/blob/main/ca.tf)),
+a `production` environment with yourself as required reviewer, and these
+Actions secrets: `CA_PLAN_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`,
+`TFSTATE_STORAGE_ACCOUNT`, `BREAKGLASS_GROUP_ID`, `TRUSTED_IP_RANGES` (an HCL
+list, e.g. `["203.0.113.0/24"]`), `TENANT_NAME`, plus `CA_APPLY_CLIENT_ID` as
+a secret on the `production` environment only.
 
 ## Safety rules
 
