@@ -66,7 +66,7 @@ so every line of Terraform output passes through `.github/scripts/redact.sh`
 first, which has its own tests. The plan JSON never leaves the runner.
 
 Both identities are defined as Terraform in
-[entra-terraform](https://github.com/pobrienDev/entra-terraform/blob/main/ca.tf),
+[entra-terraform](https://github.com/pobrienDev/entra-terraform/blob/main/github.tf),
 alongside the state storage they read.
 
 ## Guardrails: the safety rules as code
@@ -146,7 +146,7 @@ admin account.
 
 For CI, create two app registrations with GitHub OIDC federated credentials
 (this repo's are defined in
-[entra-terraform/ca.tf](https://github.com/pobrienDev/entra-terraform/blob/main/ca.tf)),
+[entra-terraform/github.tf](https://github.com/pobrienDev/entra-terraform/blob/main/github.tf)),
 a `production` environment with yourself as required reviewer, and these
 Actions secrets: `CA_PLAN_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`,
 `TFSTATE_STORAGE_ACCOUNT`, `BREAKGLASS_GROUP_ID`, `TRUSTED_IP_RANGES` (an HCL
