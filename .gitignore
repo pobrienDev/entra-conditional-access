@@ -2,7 +2,7 @@
 **/.terraform/*
 
 # State — contains every attribute of every resource in plaintext,
-# including the generated client secret. Never commit.
+# including tenant, policy and group object IDs. Never commit.
 *.tfstate
 *.tfstate.*
 

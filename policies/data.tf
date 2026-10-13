@@ -3,8 +3,7 @@
 # is in it.
 
 data "azuread_group" "breakglass" {
-  object_id        = var.breakglass_group_object_id
-  security_enabled = true
+  object_id = var.breakglass_group_object_id
 
   lifecycle {
     # Refuse to plan at all if the group is empty or misnamed. An exclusion

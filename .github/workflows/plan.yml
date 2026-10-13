@@ -29,7 +29,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r guardrails/requirements-dev.txt
-      - run: python -m pytest guardrails -q
+      - run: python -m pytest -q
 
   plan:
     runs-on: ubuntu-latest
@@ -50,51 +50,33 @@ jobs:
       # The guardrail reads this from the environment, never from the repo,
       # so a pull request cannot change which group must be excluded.
       BREAKGLASS_GROUP_ID: ${{ secrets.BREAKGLASS_GROUP_ID }}
-      TENANT_NAME: ${{ secrets.TENANT_NAME }} # present only so GitHub masks it
+      TENANT_NAME: ${{ secrets.TENANT_NAME }} # referenced only so GitHub masks it in logs
       TF_IN_AUTOMATION: "true"
     steps:
       - uses: actions/checkout@v7
 
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.16.3"
-          terraform_wrapper: false
-
-      - name: Format
-        run: terraform fmt -check -recursive
-
-      - name: Init
-        run: |
-          terraform init -input=false \
-            -backend-config="storage_account_name=${{ secrets.TFSTATE_STORAGE_ACCOUNT }}" \
-            -backend-config="container_name=tfstate" \
-            -backend-config="key=conditional-access.tfstate" \
-            -backend-config="use_azuread_auth=true" \
-            -backend-config="use_oidc=true"
-
-      - name: Validate
-        run: terraform validate
-
-      # Raw output goes to a file, never stdout. Only the redacted copy is
-      # printed. plan.json is for the guardrails and is never uploaded.
-      - name: Plan
+      - uses: ./.github/actions/plan
         id: plan
-        run: |
-          code=0
-          # -lock=false: ca-plan can read state but not write a lease.
-          terraform plan -input=false -no-color -lock=false -detailed-exitcode -out=tfplan > plan.raw 2>&1 || code=$?
-          ../.github/scripts/redact.sh < plan.raw > plan.txt
-          rm -f plan.raw
-          cat plan.txt
-          echo "exitcode=$code" >> "$GITHUB_OUTPUT"
-          # 0 = no changes, 2 = changes pending. Only 1 is a real failure.
-          if [ "$code" -eq 1 ]; then exit 1; fi
-          terraform show -json tfplan > plan.json
+        with:
+          storage-account: ${{ secrets.TFSTATE_STORAGE_ACCOUNT }}
+          args: -lock=false -out=tfplan # -lock=false: ca-plan can read state but not write a lease
 
+      - name: Format and validate
+        run: |
+          terraform fmt -check -recursive
+          terraform validate
+
+      # plan.json is for the guardrails only and is never uploaded. The exit
+      # code is captured explicitly: a pipe would hide it and the PR would
+      # pass with failing guardrails.
       - name: Guardrails
         id: guardrails
         continue-on-error: true # so the PR comment below still gets posted
-        run: python3 ../guardrails/check_plan.py plan.json | tee guardrails.txt
+        run: |
+          terraform show -json tfplan > plan.json
+          python3 ../guardrails/check_plan.py plan.json > guardrails.txt 2>&1 || code=$?
+          cat guardrails.txt
+          exit "${code:-0}"
 
       - name: Comment on PR
         env:

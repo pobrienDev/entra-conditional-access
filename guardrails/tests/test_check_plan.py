@@ -275,7 +275,9 @@ def test_all_problems_reported_together():
     p = policy("bad name", state="enabled", excluded_groups=())
     errors = check(plan(create(p)), SETTINGS)
     assert len(errors) == 3
-    assert {e.split(": ", 1)[1][:12] for e in errors} == {"new policies", "name must fo", "must exclude"}
+    assert any("report-only" in e for e in errors)
+    assert any("name must follow" in e for e in errors)
+    assert any("break-glass" in e for e in errors)
 
 
 # --- settings and CLI ----------------------------------------------------------
