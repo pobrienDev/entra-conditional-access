@@ -1,0 +1,4 @@
+# GitHub picks the repository language label by byte count. The guardrail tests are
+# larger than the Terraform policies, so without this the repo is labelled Python.
+# Leaving the tests out of the count puts the label on the policies (HCL).
+guardrails/tests/** linguist-detectable=false
